@@ -1,18 +1,13 @@
 name: Deploy Nutriscan Express API
 
-
 on:
   push:
     branches:
       - master
 
-
-
 jobs:
   deploy:
     runs-on: self-hosted
-
-
     steps:
       -name: Checkout code
        uses: actions/checkout@v4
