@@ -8,24 +8,28 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
+
     steps:
-      -name: Checkout code
-       uses: actions/checkout@v4
+      # Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      -name: Stop and remove old containers
-       run: |
-         docker compose down || true
+      # Stop and remove old containers
+      - name: Stop and remove old containers
+        run: |
+          docker compose down || true
 
-      -name: Create .env file
-       run: | 
-         echo "DB_USER=${{ secrets.DB_USER}}" >> .env
-         echo "DB_NAME=${{ secrets.DB_NAME}}" >> .env
-         echo "DB_HOST=${{ secrets.DB_HOST}}" >> .env
-         echo "DB_PORT=${{ secrets.DB_PORT}}" >> .env
-         echo "DB_PASSWORD=${{ secrets.DB_PASSWORD}}" >> .env
-         echo "JWT_SECRET=${{ secrets.JWT_SECRET}}" >> .env
+      # Create .env file from GitHub secrets
+      - name: Create .env file
+        run: |
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
+      # Start the Docker containers using docker compose
       - name: Start Server
         run: |
           docker compose up -d
-
