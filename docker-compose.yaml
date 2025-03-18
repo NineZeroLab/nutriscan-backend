@@ -3,7 +3,7 @@ version: '3.8'
 
 services:
   express-api:
-    image: node:17
+    image: node:20
     build:
       context: .
     container_name: nutriscan-api-server
