@@ -1,9 +1,9 @@
 import { Request, Response } from "express"
-import db from "../../db"
+import db from "../../config/db"
 import bcrypt from "bcryptjs"
 import 'dotenv/config'
 import jwt from 'jsonwebtoken'
-import { getUserByEmail, isRegisteredEmail } from "./authUtils"
+import { loginUserWithEmailAndPassword } from "../../repository/authRepository"
 
 const JWT_SECRET = process.env.JWT_SECRET || "default"
 
@@ -15,35 +15,15 @@ const loginUser = async (req: Request, res: Response): Promise<any> => {
         })
     }
     try {
-        const user = await getUserByEmail(email)
-        if (user.length == 0) {
-            return res.status(400)
-                .json({
-                    error: "Unable to find a user with given email"
-                })
-        }
-
-        const passwordMatch = await bcrypt.compare(password, user[0].password)
-
-        if (!passwordMatch) {
+        const result = await loginUserWithEmailAndPassword(email, password)
+        if (!result?.success) {
             return res.status(400).json({
-                error: "Invalid username or password"
+                error: result?.error?.toString()
             })
         }
-
-        const payload = {
-            email: email
-        }
-        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" })
-
-        const result = await db.query(
-            "UPDATE users SET last_logged_in = NOW() WHERE email = $1",
-            [email]
-        )
-
         return res.status(200).json({
             message: "Successfully logged in",
-            token: token
+            token: result.data?.toString()
         })
     } catch (e: any) {
         console.error("Error occured:", e)

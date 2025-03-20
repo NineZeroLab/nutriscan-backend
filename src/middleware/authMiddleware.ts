@@ -5,11 +5,11 @@ import { decode } from "punycode";
 
 const JWT_SECRET = process.env.JWT_SECRET
 
-interface AuthRequest extends Request {
+export interface AuthRequest extends Request {
     user?: any
 }
 
-const verifyToken = (req: AuthRequest, res: Response, next: NextFunction): void => {
+export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction): void => {
     const authHeader = req.header("Authorization")
 
     if (!authHeader || !authHeader.startsWith("Bearer ") || authHeader.split(" ").length !== 2) {
@@ -32,4 +32,12 @@ const verifyToken = (req: AuthRequest, res: Response, next: NextFunction): void 
     }
 }
 
-export default verifyToken
+export const constHandleUnauthorizedAccess = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (req.params.id !== req.user.id) {
+        res.status(400).json({
+            error: "Unauthorized request"
+        })
+    }
+    next()
+}
+
