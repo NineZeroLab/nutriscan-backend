@@ -1,7 +1,6 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
-
-@Entity('users')
+@Entity("users")
 export class User {
     @PrimaryColumn("text")
     uid: string
@@ -12,9 +11,9 @@ export class User {
     @Column("text")
     password: string
 
-    @Column("timestamp with time zone", { name: "created_on" })
+    @Column("timestamp with time zone")
     createdOn: Date
 
-    @Column("timestamp with time zone", { name: "last_logged_in" })
+    @Column("timestamp with time zone", { default: null })
     lastLoggedIn: Date
 }

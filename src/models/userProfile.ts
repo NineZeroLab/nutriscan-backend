@@ -13,4 +13,3 @@ export type UserCredential = {
     password: string
 }
 
-

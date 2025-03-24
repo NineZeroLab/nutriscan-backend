@@ -22,11 +22,19 @@ export const createUserProfile = async (userProfile: UserProfile): Promise<Resul
     const result = db.query(
         `INSERT INTO user_profile 
        (uid, username, is_profile_completed, photo_url, created_at, last_updated_at) 
-       VALUES ($1, $2, $3, $4, $5, $6)
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
       `,
         [userProfile.uid, userProfile.username, userProfile.isProfileCompleted, userProfile.photoUrl, userProfile.createdAt, userProfile.lastUpdatedAt]
     )
-
+    const user = result[0]
+    const newProfile: UserProfile = {
+        uid = user.uid
+    }
 
     // return the user profile object
+    return {
+
+    }
+
+
 }

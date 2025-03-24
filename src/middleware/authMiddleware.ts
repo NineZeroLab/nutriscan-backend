@@ -2,11 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import 'dotenv/config'
 import { decode } from "punycode";
+import { type } from "os";
 
 const JWT_SECRET = process.env.JWT_SECRET
 
 export interface AuthRequest extends Request {
-    user?: any
+    user?: {
+        email: string,
+        uid: string
+    }
 }
 
 export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction): void => {
@@ -21,7 +25,14 @@ export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction)
     const token = authHeader.split(" ")[1]
     try {
         const decoded = jwt.verify(token, JWT_SECRET as string)
-        req.user = decoded
+        if (!(typeof decoded === "object" && "email" in decoded && "uid" in decoded)) {
+            console.error("token should contain email and uid as payload")
+            throw Error("Invalid auth token")
+        }
+        req.user = {
+            email: decoded.email as string,
+            uid: decoded.uid as string
+        }
         console.log("user token verified")
         next()
     } catch (e) {
@@ -32,11 +43,13 @@ export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction)
     }
 }
 
-export const constHandleUnauthorizedAccess = async (req: AuthRequest, res: Response, next: NextFunction) => {
-    if (req.params.id !== req.user.id) {
-        res.status(400).json({
+export const handleUnauthorizedAccess = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+
+    if (!req.user || req.params.id !== req.user.uid) {
+        res.status(403).json({
             error: "Unauthorized request"
         })
+        return
     }
     next()
 }

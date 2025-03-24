@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
-@Entity("user_profile")
+@Entity()
 export class UserProfile {
     @PrimaryColumn("text")
     uid: string
@@ -8,19 +8,19 @@ export class UserProfile {
     @Column("text")
     username: string
 
-    @Column({ name: "is_profile_completed", type: "boolean" })
+    @Column("boolean")
     isProfileCompleted: boolean
 
-    @Column({ name: "photo_url", type: "text" })
+    @Column("text", { default: null })
     photoUrl: string
 
-    @Column({ name: "created_at", type: "timestamp with time zone" })
+    @Column("timestamp with time zone")
     createdAt: Date
 
     @Column({
-        name: "last_updated_at",
         type: "timestamp with time zone",
         default: () => "CURRENT_TIMESTAMP"
     })
     lastUpdatedAt: Date
+
 }

@@ -3,6 +3,10 @@ import 'dotenv/config'
 import { profile } from "console";
 import { User } from "../entity/User";
 import { UserProfile } from "../entity/UserProfile";
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
+import { NutrientPreferenceLevel } from "../entity/NutrientPreferenceLevel";
+import { NutrientType } from "../entity/NutrientType";
+import { UserPreference } from "../entity/UserPreference";
 
 
 const AppDataSource = new DataSource({
@@ -16,10 +20,14 @@ const AppDataSource = new DataSource({
     logging: true,
     entities: [
         User,
-        UserProfile
+        UserProfile,
+        NutrientPreferenceLevel,
+        NutrientType,
+        UserPreference
     ],
     subscribers: [],
-    migrations: []
+    migrations: [],
+    namingStrategy: new SnakeNamingStrategy()
 })
 
 
