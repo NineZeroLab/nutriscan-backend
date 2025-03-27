@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
-import { UserPreference } from './UserPreference'
+import { UserNutrientPreference } from './UserPreference'
 
 @Entity()
 export class NutrientPreferenceLevel {
@@ -9,6 +9,6 @@ export class NutrientPreferenceLevel {
     @Column("text")
     level: string
 
-    @OneToMany(() => UserPreference, (userPreference) => userPreference.nutrientPreferenceLevel, { cascade: true })
-    userPreferences: UserPreference[]
+    @OneToMany(() => UserNutrientPreference, (userPreference) => userPreference.nutrientPreferenceLevel, { cascade: true })
+    userNutrientPreference: UserNutrientPreference[]
 }

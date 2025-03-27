@@ -11,6 +11,9 @@ export class User {
     @Column("text")
     password: string
 
+    @Column("boolean", { default: false })
+    isVerified: boolean
+
     @Column("timestamp with time zone")
     createdOn: Date
 

@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
-import { UserPreference } from "./UserPreference";
+import { UserNutrientPreference } from "./UserPreference";
 
 @Entity()
 export class NutrientType {
@@ -9,7 +9,7 @@ export class NutrientType {
     @Column("text")
     name: string
 
-    @OneToMany(() => UserPreference, (userPreference) => userPreference.nutrientType)
-    userPreferences: UserPreference[]
+    @OneToMany(() => UserNutrientPreference, (userPreference) => userPreference.nutrientType)
+    userPreferences: UserNutrientPreference[]
 }
 

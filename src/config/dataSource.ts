@@ -6,7 +6,9 @@ import { UserProfile } from "../entity/UserProfile";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { NutrientPreferenceLevel } from "../entity/NutrientPreferenceLevel";
 import { NutrientType } from "../entity/NutrientType";
-import { UserPreference } from "../entity/UserPreference";
+import { UserNutrientPreference } from "../entity/UserPreference";
+import { UserDietaryRestriction } from "../entity/UserDietaryRestrictions";
+import { SearchHistory } from "../entity/SearchHistory";
 
 
 const AppDataSource = new DataSource({
@@ -23,7 +25,9 @@ const AppDataSource = new DataSource({
         UserProfile,
         NutrientPreferenceLevel,
         NutrientType,
-        UserPreference
+        UserNutrientPreference,
+        UserDietaryRestriction,
+        SearchHistory
     ],
     subscribers: [],
     migrations: [],

@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from "typeorm";
+import { UserDietaryRestriction } from "./UserDietaryRestrictions";
+import { SearchHistory } from "./SearchHistory";
 
 @Entity()
 export class UserProfile {
@@ -23,4 +25,9 @@ export class UserProfile {
     })
     lastUpdatedAt: Date
 
+    @OneToOne(() => UserDietaryRestriction, (userDietaryRestriction) => userDietaryRestriction.userProfile)
+    userDietaryRestriction: UserDietaryRestriction
+
+    @OneToMany(() => SearchHistory, (searchHistory) => searchHistory.userProfile)
+    searchHistory: SearchHistory[]
 }
